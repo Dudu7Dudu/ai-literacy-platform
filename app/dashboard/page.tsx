@@ -1,17 +1,24 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import LogoutButton from "@/app/components/logoutbutton";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return <div>Unauthorized</div>;
+    redirect("/login");
   }
+  
 
   return (
-    <main className="p-8">
-      <h1>Welcome {session.user?.name}</h1>
-      <p>Role: {(session.user as any).role}</p>
-    </main>
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome {session.user?.email}</p>
+      <LogoutButton />
+    </div>
+    
   );
+  
+  
 }
