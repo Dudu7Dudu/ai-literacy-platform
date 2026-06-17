@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -13,8 +14,8 @@ export const authOptions: NextAuthOptions = {
       name: "credentials",
 
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials) {
@@ -37,8 +38,6 @@ export const authOptions: NextAuthOptions = {
           user.password
         );
 
-console.log("FOUND USER:", user);
-
         if (!validPassword) {
           return null;
         }
@@ -56,7 +55,7 @@ console.log("FOUND USER:", user);
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = user.role;
       }
 
       return token;
@@ -64,8 +63,8 @@ console.log("FOUND USER:", user);
 
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.sub;
-        (session.user as any).role = token.role;
+        session.user.id = token.sub!;
+        session.user.role = token.role as string;
       }
 
       return session;

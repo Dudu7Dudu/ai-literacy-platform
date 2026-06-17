@@ -14,3 +14,23 @@ model User {
   role      String   @default("student")
   createdAt DateTime @default(now())
 }
+model Module {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  content     String
+  orderIndex  Int
+  createdAt   DateTime @default(now())
+}
+model Progress {
+  id        String   @id @default(uuid())
+  completed Boolean  @default(false)
+
+  userId    String
+  moduleId  String
+
+  user       User     @relation(fields: [userId], references: [id])
+  module     Module   @relation(fields: [moduleId], references: [id])
+
+  @@unique([userId, moduleId])
+}
