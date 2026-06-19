@@ -18,7 +18,11 @@ export default async function ModulePage({
         include: {
           questions: {
             include: {
-              answers: true,
+              answers: {
+                include: {
+                  nextQuestion: true,
+                },
+              },
             },
           },
         },
