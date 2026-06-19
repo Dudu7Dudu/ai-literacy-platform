@@ -73,43 +73,88 @@ export default function QuizComponent({
         }
     };
 
+
     return (
-        <div>
-            <h3>{quiz.title}</h3>
+        <div className="bg-white border rounded-xl shadow-sm p-6">
+            <h3 className="text-2xl font-bold mb-6">
+                {quiz.title}
+            </h3>
 
             {visibleQuestions.map((question) => (
                 <div
                     key={question.id}
-                    style={{
-                        marginBottom: "2rem",
-                        padding: "1rem",
-                        border: "1px solid #ccc",
-                    }}
+                    className="bg-gray-50 border rounded-lg p-5 mb-6"
                 >
-                    <p>{question.text}</p>
+                    <p className="text-lg font-medium mb-4">
+                        {question.text}
+                    </p>
 
-                    {question.answers.map((answer) => (
-                        <button
-                            key={answer.id}
-                            onClick={() =>
-                                handleAnswerClick(question.id, answer)
-                            }
-                            disabled={answeredQuestions.includes(
-                                question.id
-                            )}
-                        >
-                            {answer.text}
-                        </button>
-                    ))}
+                    <div className="space-y-2">
+                        {question.answers.map((answer) => (
+                            <button
+                                key={answer.id}
+                                onClick={() =>
+                                    handleAnswerClick(
+                                        question.id,
+                                        answer
+                                    )
+                                }
+                                disabled={answeredQuestions.includes(
+                                    question.id
+                                )}
+                                className="
+                                block
+                                w-full
+                                text-left
+                                p-3
+                                border
+                                rounded-lg
+                                bg-white
+                                hover:bg-blue-50
+                                hover:border-blue-500
+                                transition
+                                disabled:opacity-50
+                                disabled:cursor-not-allowed
+                            "
+                            >
+                                {answer.text}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             ))}
 
-            {feedback && <p>{feedback}</p>}
-            {isFinished && (
-                <div>
-                    <h4>Scenario Complete</h4>
+            {feedback && (
+                <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+                    <p className="font-semibold">
+                        {feedback}
+                    </p>
+                </div>
+            )}
 
-                    <button onClick={restartQuiz}>
+            {isFinished && (
+                <div className="mt-6 border-t pt-6">
+                    <h4 className="text-xl font-bold text-green-600">
+                        Scenario Complete
+                    </h4>
+
+                    <p className="text-gray-600 mt-2">
+                        You have reached the end of this path.
+                    </p>
+
+                    <button
+                        onClick={restartQuiz}
+                        className="
+                        mt-4
+                        bg-blue-600
+                        text-white
+                        px-5
+                        py-2
+                        rounded-lg
+                        hover:bg-blue-700
+                        transition
+                    "
+                    >
                         Try Another Path
                     </button>
                 </div>
